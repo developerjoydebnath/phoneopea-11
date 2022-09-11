@@ -23,6 +23,7 @@ const verifyJWT = (req, res, next) => {
         if (err) {
             return res.status(403).send({ message: 'Forbidden access' });
         }
+        console.log(decoded)
         req.decoded = decoded;
         next();
     })
@@ -101,7 +102,6 @@ async function run() {
                 }
             };
             const result = await phonesCollection.updateOne(filter, updateDoc, options);
-            console.log(result)
             res.send(result);
         })
 
@@ -131,7 +131,7 @@ async function run() {
 
         //find items by user email address
         app.get("/myInventory", verifyJWT, async (req, res) => {
-            const decodedEmail = req.decoded.email;
+            const decodedEmail = req.decoded.userEmail;
             const userEmail = req.query.email;
             if (decodedEmail === userEmail) {
                 const query = { email: { $in: [userEmail] } };
