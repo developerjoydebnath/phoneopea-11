@@ -23,7 +23,7 @@ const verifyJWT = (req, res, next) => {
         if (err) {
             return res.status(403).send({ message: 'Forbidden access' });
         }
-        console.log(decoded)
+        // console.log(decoded)
         req.decoded = decoded;
         next();
     })
@@ -118,7 +118,7 @@ async function run() {
                 }
             };
             const result = await phonesCollection.updateOne(filter, updateDoc, options);
-            console.log(result)
+            // console.log(result)
             res.send(result);
         })
 
@@ -147,7 +147,7 @@ async function run() {
         // delete item from database
         app.delete("/deleteItem", async (req, res) => {
             const id = req.query.id;
-            console.log(id)
+            // console.log(id)
             const query = { _id: ObjectId(id) };
             const result = await phonesCollection.deleteOne(query);
             res.send(result);
