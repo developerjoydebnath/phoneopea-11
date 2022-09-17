@@ -38,6 +38,7 @@ async function run() {
     try {
         await client.connect();
         const phonesCollection = client.db("warehouse").collection("phones");
+        const reviewCollection = client.db("warehouse").collection("review");
 
         // load all data
         app.get("/allPhone", async (req, res)=> {
@@ -165,6 +166,21 @@ async function run() {
         app.get("/productCount", async(req, res)=> {
             const count = await phonesCollection.estimatedDocumentCount();
             res.send({count});
+        })
+
+        // load all review data 
+        app.get("/review", async (req, res)=> {
+            const query = {};
+            const cursor = reviewCollection.find(query).sort({_id:-1}).limit(10);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+        // add new review 
+        app.post("/addReview", async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.send(result)
         })
 
     }
