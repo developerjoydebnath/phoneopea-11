@@ -183,6 +183,24 @@ async function run() {
             res.send(result)
         })
 
+        // delete a review 
+        app.delete("/deleteReview", async (req, res)=> {
+            const id = req.query.id;
+            const email = req.query.email;
+            const userEmail = req.query.userEmail;
+            const query = { _id: ObjectId(id) };
+            if(email === undefined){
+                res.send("Only admin can delete the review");
+            }
+            else if(email === "joydebnathjp017@gmail.com" || email === userEmail){
+                const result = await reviewCollection.deleteOne(query);
+                res.send(result);
+            }
+            else{
+                res.send("Access Denied");
+            }
+        })
+
     }
     finally {
         // await client.close();
